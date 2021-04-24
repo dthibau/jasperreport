@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<annuaire name="OrdersSchema">
+<personne name="Dupont" firstName="Eric" age="30">
+  <telephone type="portable">
+  	<no>0637980112</no>
+  	<operateur>Jaune</operateur>
+  </telephone>
+  <telephone type="fixe">
+  	<no>0137980112</no>
+  	<operateur>Rouge</operateur>
+  </telephone>
+  <email>eric.dupont@mailbox.com</email>
+  <email>edupont@persomail.com</email>
+ </personne>
+<personne name="Durand" firstName="Pascal" age="45">
+  <telephone type="portable">
+  	<no>0625364758</no>
+  	<operateur>Jaune</operateur>
+  </telephone>
+  <telephone type="fixe">
+  	<no>0125364758</no>
+  	<operateur>Rouge</operateur>
+  </telephone>
+  <email>pascal.durand@mailbox.com</email>
+ </personne>
+ 
+</annuaire>
+  

@@ -1,0 +1,1 @@
+UPDATE time_by_day SET the_year=1998 WHERE the_year=2007
