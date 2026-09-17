@@ -1,0 +1,97 @@
+<!-- Atelier 10 : expressions simples – concaténation, valeurs nulles, affichage conditionnel, fonctions de type tableur (IF, DAYS, DATEFORMAT), libellés dynamiques -->
+<jasperReport name="Atelier10_Expressions" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="AllSectionsNoDetail" uuid="aa000000-0000-4000-8000-000000000001">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0"/>
+	<style name="Entete" bold="true" mode="Opaque" backcolor="#D9D9D9" vTextAlign="Middle">
+		<box padding="2" leftPadding="4" rightPadding="4"><pen lineWidth="0.75"/></box>
+	</style>
+	<style name="Donnees" vTextAlign="Top">
+		<box padding="2" leftPadding="4" rightPadding="4"><pen lineWidth="0.5" lineColor="#808080"/></box>
+		<conditionalStyle forecolor="#C00000">
+			<conditionExpression><![CDATA[$F{SHIPPEDDATE} != null && $F{SHIPPEDDATE}.after($F{REQUIREDDATE})]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<parameter name="P_PAYS" class="java.lang.String">
+		<description><![CDATA[Pays de livraison]]></description>
+		<defaultValueExpression><![CDATA["USA"]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[SELECT O.ORDERID, O.SHIPNAME, O.SHIPADDRESS, O.SHIPPOSTALCODE, O.SHIPCITY, O.SHIPREGION,
+       O.ORDERDATE, O.REQUIREDDATE, O.SHIPPEDDATE, O.FREIGHT
+FROM ORDERS O
+WHERE O.SHIPCOUNTRY = $P{P_PAYS}
+ORDER BY O.ORDERDATE]]></query>
+	<field name="ORDERID" class="java.lang.Integer"/>
+	<field name="SHIPNAME" class="java.lang.String"/>
+	<field name="SHIPADDRESS" class="java.lang.String"/>
+	<field name="SHIPPOSTALCODE" class="java.lang.String"/>
+	<field name="SHIPCITY" class="java.lang.String"/>
+	<field name="SHIPREGION" class="java.lang.String"/>
+	<field name="ORDERDATE" class="java.sql.Timestamp"/>
+	<field name="REQUIREDDATE" class="java.sql.Timestamp"/>
+	<field name="SHIPPEDDATE" class="java.sql.Timestamp"/>
+	<field name="FREIGHT" class="java.math.BigDecimal"/>
+	<variable name="NB_RETARD" calculation="Sum" class="java.lang.Integer">
+		<expression><![CDATA[($F{SHIPPEDDATE} != null && $F{SHIPPEDDATE}.after($F{REQUIREDDATE})) ? 1 : 0]]></expression>
+	</variable>
+	<title height="60" splitType="Stretch">
+		<element kind="textField" uuid="aa000000-0000-4000-8000-000000000002" x="0" y="0" width="802" height="30" fontSize="18.0" bold="true" vTextAlign="Middle">
+			<expression><![CDATA["Suivi des expéditions – " + $P{P_PAYS} + " – édité le " + DATEFORMAT(TODAY(), "dd/MM/yyyy")]]></expression>
+		</element>
+		<element kind="textField" uuid="aa000000-0000-4000-8000-000000000003" x="0" y="32" width="802" height="18" italic="true" vTextAlign="Middle" evaluationTime="Report">
+			<expression><![CDATA[$V{REPORT_COUNT} + " commande" + ($V{REPORT_COUNT} > 1 ? "s" : "") + ", dont " + $V{NB_RETARD} + " expédiée" + ($V{NB_RETARD} > 1 ? "s" : "") + " en retard (en rouge)"]]></expression>
+		</element>
+	</title>
+	<columnHeader height="22" splitType="Stretch">
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000004" x="0" y="0" width="50" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[N°]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000005" x="50" y="0" width="160" height="22" style="Entete"><text><![CDATA[Client]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000006" x="210" y="0" width="240" height="22" style="Entete"><text><![CDATA[Adresse de livraison]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000007" x="450" y="0" width="70" height="22" style="Entete" hTextAlign="Center"><text><![CDATA[Commandée]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000008" x="520" y="0" width="70" height="22" style="Entete" hTextAlign="Center"><text><![CDATA[Expédiée]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000009" x="590" y="0" width="60" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[Délai (j)]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000010" x="650" y="0" width="80" height="22" style="Entete" hTextAlign="Center"><text><![CDATA[Statut]]></text></element>
+		<element kind="staticText" uuid="aa000000-0000-4000-8000-000000000011" x="730" y="0" width="72" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[Port]]></text></element>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000012" x="0" y="0" width="50" height="18" style="Donnees" hTextAlign="Right" stretchType="ElementGroupHeight">
+				<expression><![CDATA[$F{ORDERID}]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000013" x="50" y="0" width="160" height="18" style="Donnees" textAdjust="StretchHeight">
+				<expression><![CDATA[UPPER($F{SHIPNAME})]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000014" x="210" y="0" width="240" height="18" style="Donnees" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{SHIPADDRESS} + ", " + $F{SHIPPOSTALCODE} + " " + $F{SHIPCITY} + ($F{SHIPREGION} == null ? "" : " (" + $F{SHIPREGION} + ")")]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000015" x="450" y="0" width="70" height="18" style="Donnees" hTextAlign="Center" pattern="dd/MM/yyyy" stretchType="ElementGroupHeight">
+				<expression><![CDATA[$F{ORDERDATE}]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000016" x="520" y="0" width="70" height="18" style="Donnees" hTextAlign="Center" stretchType="ElementGroupHeight">
+				<expression><![CDATA[$F{SHIPPEDDATE} == null ? "–" : DATEFORMAT($F{SHIPPEDDATE}, "dd/MM/yyyy")]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000017" x="590" y="0" width="60" height="18" style="Donnees" hTextAlign="Right" pattern="#,##0" blankWhenNull="true" stretchType="ElementGroupHeight">
+				<expression><![CDATA[$F{SHIPPEDDATE} == null ? null : DAYS($F{ORDERDATE}, $F{SHIPPEDDATE})]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000018" x="650" y="0" width="80" height="18" style="Donnees" hTextAlign="Center" stretchType="ElementGroupHeight">
+				<box rightPadding="16"/>
+				<expression><![CDATA[IF($F{SHIPPEDDATE} == null, "En attente", IF($F{SHIPPEDDATE}.after($F{REQUIREDDATE}), "En retard", "OK"))]]></expression>
+			</element>
+			<element kind="image" uuid="aa000000-0000-4000-8000-000000000019" x="717" y="2" width="10" height="14" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle">
+				<printWhenExpression><![CDATA[$F{SHIPPEDDATE} != null && $F{SHIPPEDDATE}.after($F{REQUIREDDATE})]]></printWhenExpression>
+				<expression><![CDATA["warning.gif"]]></expression>
+			</element>
+			<element kind="textField" uuid="aa000000-0000-4000-8000-000000000020" x="730" y="0" width="72" height="18" style="Donnees" hTextAlign="Right" pattern="#,##0.00 €" stretchType="ElementGroupHeight">
+				<expression><![CDATA[$F{FREIGHT}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="24" splitType="Stretch">
+		<element kind="textField" uuid="aa000000-0000-4000-8000-000000000021" x="0" y="4" width="400" height="16" fontSize="8.0" vTextAlign="Middle">
+			<expression><![CDATA["Retard = expédition après la date demandée. Délai = jours entre la commande et l'expédition. " + ($P{P_PAYS}.equals("USA") ? "Régions affichées entre parenthèses." : "")]]></expression>
+		</element>
+		<element kind="textField" uuid="aa000000-0000-4000-8000-000000000022" x="642" y="4" width="100" height="16" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER} + " sur"]]></expression>
+		</element>
+		<element kind="textField" uuid="aa000000-0000-4000-8000-000000000023" x="742" y="4" width="60" height="16" fontSize="8.0" vTextAlign="Middle" evaluationTime="Report">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

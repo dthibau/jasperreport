@@ -1,0 +1,97 @@
+<!-- Atelier 8 : tableau des commandes mis en forme avec la bibliothèque de styles charte.jrtx (styles, style conditionnel, patterns) -->
+<jasperReport name="Atelier8_Charte" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a8000000-0000-4000-8000-000000000001">
+	<template><![CDATA["charte.jrtx"]]></template>
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0" forecolor="#000000"/>
+	<query language="sql"><![CDATA[SELECT D.ID AS DOCUMENT,
+       A.FIRSTNAME || ' ' || A.LASTNAME AS CLIENT,
+       PO.POSITIONNO AS LIGNE,
+       P.NAME AS PRODUIT,
+       PO.QUANTITY AS QUANTITE,
+       PO.PRICE AS PRIX,
+       PO.QUANTITY * PO.PRICE AS TOTAL
+FROM POSITIONS PO
+JOIN DOCUMENT D ON D.ID = PO.DOCUMENTID
+JOIN PRODUCT P ON P.ID = PO.PRODUCTID
+JOIN ADDRESS A ON A.ID = D.ADDRESSID
+WHERE D.ID <= 5
+ORDER BY D.ID, PO.POSITIONNO]]></query>
+	<field name="DOCUMENT" class="java.lang.Integer"/>
+	<field name="CLIENT" class="java.lang.String"/>
+	<field name="LIGNE" class="java.lang.Integer"/>
+	<field name="PRODUIT" class="java.lang.String"/>
+	<field name="QUANTITE" class="java.lang.Integer"/>
+	<field name="PRIX" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<variable name="LIGNE_PAIRE" class="java.lang.Boolean">
+		<expression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></expression>
+	</variable>
+	<variable name="MONTANT_ELEVE" class="java.lang.Boolean">
+		<expression><![CDATA[$F{TOTAL}.doubleValue() >= 500]]></expression>
+	</variable>
+	<variable name="TOTAL_GENERAL" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{TOTAL}]]></expression>
+	</variable>
+	<title height="70" splitType="Stretch">
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000002" x="0" y="0" width="555" height="30" style="Titre">
+			<text><![CDATA[Détail des commandes clients]]></text>
+		</element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000003" x="0" y="30" width="400" height="18" style="SousTitre">
+			<text><![CDATA[Lignes de commande des documents n° 1 à 5 – base d'exemple]]></text>
+		</element>
+		<element kind="textField" uuid="a8000000-0000-4000-8000-000000000004" x="355" y="30" width="200" height="18" style="SousTitre" hTextAlign="Right" pattern="'Édité le' dd/MM/yyyy">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="line" uuid="a8000000-0000-4000-8000-000000000005" x="0" y="54" width="555" height="1" forecolor="#1F3A5F">
+			<pen lineWidth="1.5"/>
+		</element>
+	</title>
+	<columnHeader height="22" splitType="Stretch">
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000006" x="0" y="0" width="45" height="22" style="Entete" hTextAlign="Center"><text><![CDATA[Doc.]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000007" x="45" y="0" width="120" height="22" style="Entete"><text><![CDATA[Client]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000008" x="165" y="0" width="40" height="22" style="Entete" hTextAlign="Center"><text><![CDATA[Ligne]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000009" x="205" y="0" width="170" height="22" style="Entete"><text><![CDATA[Produit]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000010" x="375" y="0" width="50" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[Qté]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000011" x="425" y="0" width="60" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[Prix unit. (€)]]></text></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000012" x="485" y="0" width="70" height="22" style="Entete" hTextAlign="Right"><text><![CDATA[Total (€)]]></text></element>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<element kind="frame" uuid="a8000000-0000-4000-8000-000000000013" x="0" y="0" width="555" height="18" style="Ligne" stretchType="ContainerHeight">
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000014" x="0" y="0" width="45" height="18" style="Donnees" hTextAlign="Center" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{DOCUMENT}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000015" x="45" y="0" width="120" height="18" style="Donnees" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{CLIENT}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000016" x="165" y="0" width="40" height="18" style="Donnees" hTextAlign="Center" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{LIGNE}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000017" x="205" y="0" width="170" height="18" style="Donnees" textAdjust="StretchHeight">
+					<expression><![CDATA[$F{PRODUIT}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000018" x="375" y="0" width="50" height="18" style="DonneesNombre" pattern="#,##0" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{QUANTITE}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000019" x="425" y="0" width="60" height="18" style="DonneesNombre" pattern="#,##0.00" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{PRIX}]]></expression>
+				</element>
+				<element kind="textField" uuid="a8000000-0000-4000-8000-000000000020" x="485" y="0" width="70" height="18" style="MontantTotal" pattern="#,##0.00" stretchType="ContainerHeight">
+					<expression><![CDATA[$F{TOTAL}]]></expression>
+				</element>
+			</element>
+		</band>
+	</detail>
+	<summary height="30" splitType="Stretch">
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000021" x="325" y="4" width="160" height="22" style="Total"><text><![CDATA[Total général (€)]]></text></element>
+		<element kind="textField" uuid="a8000000-0000-4000-8000-000000000022" x="485" y="4" width="70" height="22" style="Total" pattern="#,##0.00">
+			<expression><![CDATA[$V{TOTAL_GENERAL}]]></expression>
+		</element>
+	</summary>
+	<pageFooter height="24" splitType="Stretch">
+		<element kind="line" uuid="a8000000-0000-4000-8000-000000000023" x="0" y="2" width="555" height="1" forecolor="#1F3A5F"><pen lineWidth="1.0"/></element>
+		<element kind="staticText" uuid="a8000000-0000-4000-8000-000000000024" x="0" y="6" width="300" height="16" style="PiedDePage"><text><![CDATA[Charte graphique : charte.jrtx – montants en rouge au-delà de 500 €]]></text></element>
+		<element kind="textField" uuid="a8000000-0000-4000-8000-000000000025" x="455" y="6" width="100" height="16" style="PiedDePage" hTextAlign="Right">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

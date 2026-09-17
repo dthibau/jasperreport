@@ -1,0 +1,32 @@
+<!-- Atelier 8 : bibliothèque de styles (Style Template File) partagée entre les rapports ; les conditions doivent être de simples références ($V{...}, $F{...}), les calculs sont faits par des variables du rapport ; la police de base est définie par le style par défaut du rapport -->
+<jasperTemplate>
+	<style name="Titre" fontSize="18.0" bold="true" forecolor="#1F3A5F" vTextAlign="Middle"/>
+	<style name="SousTitre" fontSize="10.0" italic="true" forecolor="#444444" vTextAlign="Middle"/>
+	<style name="Entete" bold="true" mode="Opaque" backcolor="#D9D9D9" vTextAlign="Middle">
+		<box padding="2" leftPadding="4" rightPadding="4">
+			<pen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="Donnees" vTextAlign="Middle">
+		<box padding="2" leftPadding="4" rightPadding="4">
+			<pen lineWidth="0.5" lineColor="#808080"/>
+		</box>
+	</style>
+	<style name="DonneesNombre" style="Donnees" hTextAlign="Right"/>
+	<style name="Ligne" mode="Transparent">
+		<conditionalStyle mode="Opaque" backcolor="#F2F2F2">
+			<conditionExpression><![CDATA[$V{LIGNE_PAIRE}]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="MontantTotal" style="DonneesNombre" bold="true">
+		<conditionalStyle forecolor="#C00000">
+			<conditionExpression><![CDATA[$V{MONTANT_ELEVE}]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<style name="Total" bold="true" hTextAlign="Right" vTextAlign="Middle">
+		<box padding="2" rightPadding="4">
+			<topPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="PiedDePage" fontSize="8.0" forecolor="#555555" vTextAlign="Middle"/>
+</jasperTemplate>

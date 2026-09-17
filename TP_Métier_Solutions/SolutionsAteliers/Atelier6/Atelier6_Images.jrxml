@@ -1,0 +1,99 @@
+<!-- Atelier 6 : logo, lien hypertexte, image de pied de page et filigrane conditionnel -->
+<jasperReport name="Atelier6_Images" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="AllSectionsNoDetail" uuid="a4000000-0000-4000-8000-000000000001">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="9.0"/>
+	<parameter name="P_PAYS" class="java.lang.String">
+		<description><![CDATA[Pays de livraison (valeur exacte de la colonne SHIPCOUNTRY, ex. France, Germany, USA)]]></description>
+		<defaultValueExpression><![CDATA["France"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_BROUILLON" class="java.lang.Boolean">
+		<description><![CDATA[Afficher le filigrane BROUILLON]]></description>
+		<defaultValueExpression><![CDATA[Boolean.TRUE]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[SELECT O.ORDERID, O.SHIPCITY, O.SHIPNAME, O.SHIPPEDDATE,
+       A.FIRSTNAME || ' ' || A.LASTNAME AS EMPLOYE
+FROM ORDERS O
+JOIN ADDRESS A ON A.ID = O.EMPLOYEEID
+WHERE O.SHIPCOUNTRY = $P{P_PAYS}
+  AND O.SHIPPEDDATE IS NOT NULL
+ORDER BY O.SHIPCITY, EMPLOYE, O.SHIPPEDDATE]]></query>
+	<field name="ORDERID" class="java.lang.Integer"/>
+	<field name="SHIPCITY" class="java.lang.String"/>
+	<field name="SHIPNAME" class="java.lang.String"/>
+	<field name="SHIPPEDDATE" class="java.sql.Timestamp"/>
+	<field name="EMPLOYE" class="java.lang.String"/>
+	<background height="802" splitType="Stretch">
+		<element kind="image" uuid="a6000000-0000-4000-8000-000000000001" x="0" y="0" width="555" height="802" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle" onErrorType="Blank">
+			<printWhenExpression><![CDATA[$P{P_BROUILLON}]]></printWhenExpression>
+			<expression><![CDATA["filigrane.png"]]></expression>
+		</element>
+	</background>
+	<title height="70" splitType="Stretch">
+		<element kind="image" uuid="a6000000-0000-4000-8000-000000000002" x="0" y="2" width="150" height="40" scaleImage="RetainShape" hImageAlign="Left" vImageAlign="Middle" onErrorType="Error" linkType="Reference" linkTarget="Blank">
+			<expression><![CDATA["logo.png"]]></expression>
+			<hyperlinkReferenceExpression><![CDATA["https://www.plb.fr"]]></hyperlinkReferenceExpression>
+			<hyperlinkTooltipExpression><![CDATA["Site de PLB Formation"]]></hyperlinkTooltipExpression>
+		</element>
+		<element kind="textField" uuid="a4000000-0000-4000-8000-000000000002" x="160" y="5" width="395" height="34" fontSize="18.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA["Commandes expédiées – " + $P{P_PAYS}]]></expression>
+		</element>
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000003" x="160" y="40" width="395" height="20" italic="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Liste des commandes par ville et par employé]]></text>
+		</element>
+	</title>
+	<columnHeader height="24" splitType="Stretch">
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000004" x="0" y="2" width="110" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Ville]]></text>
+		</element>
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000005" x="110" y="2" width="130" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Employé]]></text>
+		</element>
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000006" x="240" y="2" width="70" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[N° cmde]]></text>
+		</element>
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000007" x="320" y="2" width="150" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Client]]></text>
+		</element>
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000008" x="475" y="2" width="80" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<text><![CDATA[Expédiée le]]></text>
+		</element>
+		<element kind="line" uuid="a4000000-0000-4000-8000-000000000009" x="0" y="23" width="555" height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<element kind="textField" uuid="a4000000-0000-4000-8000-000000000010" x="0" y="0" width="110" height="16" vTextAlign="Middle">
+				<expression><![CDATA[$F{SHIPCITY}]]></expression>
+			</element>
+			<element kind="textField" uuid="a4000000-0000-4000-8000-000000000011" x="110" y="0" width="130" height="16" vTextAlign="Middle">
+				<expression><![CDATA[$F{EMPLOYE}]]></expression>
+			</element>
+			<element kind="textField" uuid="a4000000-0000-4000-8000-000000000012" x="240" y="0" width="70" height="16" hTextAlign="Right" vTextAlign="Middle">
+				<expression><![CDATA[$F{ORDERID}]]></expression>
+			</element>
+			<element kind="textField" uuid="a4000000-0000-4000-8000-000000000013" x="320" y="0" width="150" height="16" vTextAlign="Middle" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{SHIPNAME}]]></expression>
+			</element>
+			<element kind="textField" uuid="a4000000-0000-4000-8000-000000000014" x="475" y="0" width="80" height="16" hTextAlign="Right" vTextAlign="Middle" pattern="dd/MM/yyyy">
+				<expression><![CDATA[$F{SHIPPEDDATE}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="24" splitType="Stretch">
+		<element kind="textField" uuid="a4000000-0000-4000-8000-000000000015" x="0" y="4" width="200" height="16" fontSize="8.0" vTextAlign="Middle" pattern="dd/MM/yyyy HH:mm">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="image" uuid="a6000000-0000-4000-8000-000000000003" x="238" y="8" width="78" height="8" scaleImage="RetainShape">
+			<expression><![CDATA["logo-plb-footer.gif"]]></expression>
+		</element>
+		<element kind="textField" uuid="a4000000-0000-4000-8000-000000000016" x="395" y="4" width="100" height="16" fontSize="8.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER} + " sur"]]></expression>
+		</element>
+		<element kind="textField" uuid="a4000000-0000-4000-8000-000000000017" x="495" y="4" width="60" height="16" fontSize="8.0" vTextAlign="Middle" evaluationTime="Report">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+	<noData height="40">
+		<element kind="staticText" uuid="a4000000-0000-4000-8000-000000000018" x="0" y="10" width="555" height="20" italic="true" hTextAlign="Center">
+			<text><![CDATA[Aucune commande expédiée pour ces critères]]></text>
+		</element>
+	</noData>
+</jasperReport>

@@ -1,0 +1,47 @@
+<!-- Atelier 2 : liste des adresses de la base d'exemple (table ADDRESS), requête écrite avec l'assistant Dataset and Query -->
+<jasperReport name="Atelier2_Adresses" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a2000000-0000-4000-8000-000000000001">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="10.0"/>
+	<query language="sql"><![CDATA[SELECT FIRSTNAME, LASTNAME, STREET, CITY
+FROM ADDRESS
+ORDER BY CITY, LASTNAME]]></query>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<field name="STREET" class="java.lang.String"/>
+	<field name="CITY" class="java.lang.String"/>
+	<title height="60" splitType="Stretch">
+		<element kind="staticText" uuid="a2000000-0000-4000-8000-000000000002" x="0" y="10" width="555" height="30" fontSize="18.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Liste des adresses]]></text>
+		</element>
+	</title>
+	<columnHeader height="22" splitType="Stretch">
+		<element kind="staticText" uuid="a2000000-0000-4000-8000-000000000003" x="0" y="0" width="130" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Nom]]></text>
+		</element>
+		<element kind="staticText" uuid="a2000000-0000-4000-8000-000000000004" x="130" y="0" width="120" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Prénom]]></text>
+		</element>
+		<element kind="staticText" uuid="a2000000-0000-4000-8000-000000000005" x="250" y="0" width="185" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Rue]]></text>
+		</element>
+		<element kind="staticText" uuid="a2000000-0000-4000-8000-000000000006" x="435" y="0" width="120" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Ville]]></text>
+		</element>
+		<element kind="line" uuid="a2000000-0000-4000-8000-000000000007" x="0" y="21" width="555" height="1"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<element kind="textField" uuid="a2000000-0000-4000-8000-000000000008" x="0" y="0" width="130" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{LASTNAME}]]></expression>
+			</element>
+			<element kind="textField" uuid="a2000000-0000-4000-8000-000000000009" x="130" y="0" width="120" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{FIRSTNAME}]]></expression>
+			</element>
+			<element kind="textField" uuid="a2000000-0000-4000-8000-000000000010" x="250" y="0" width="185" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{STREET}]]></expression>
+			</element>
+			<element kind="textField" uuid="a2000000-0000-4000-8000-000000000011" x="435" y="0" width="120" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{CITY}]]></expression>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

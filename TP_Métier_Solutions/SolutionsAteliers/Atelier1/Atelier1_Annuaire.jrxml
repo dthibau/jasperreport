@@ -1,0 +1,90 @@
+<!-- Atelier 1 : annuaire par ville créé avec l'assistant (Blank A4, Sample DB, groupe CITY), complété pas à pas : titre, paramètres, variable, pied de page, résumé -->
+<jasperReport name="Atelier1_Annuaire" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1000000-0000-4000-8000-000000000001">
+	<style name="Base" default="true" fontName="DejaVu Sans" fontSize="10.0"/>
+	<parameter name="P_SOUS_TITRE" class="java.lang.String">
+		<description><![CDATA[Sous-titre affiché sous le titre du rapport]]></description>
+		<defaultValueExpression><![CDATA["Contacts de la base d'exemple"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_AFFICHER_RUE" class="java.lang.Boolean">
+		<description><![CDATA[Afficher la colonne Rue]]></description>
+		<defaultValueExpression><![CDATA[Boolean.TRUE]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[SELECT FIRSTNAME, LASTNAME, STREET, CITY
+FROM ADDRESS
+ORDER BY CITY, LASTNAME]]></query>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<field name="STREET" class="java.lang.String"/>
+	<field name="CITY" class="java.lang.String"/>
+	<variable name="NB_CONTACTS" resetType="Group" calculation="Count" resetGroup="CITY" class="java.lang.Integer">
+		<expression><![CDATA[$F{LASTNAME}]]></expression>
+	</variable>
+	<group name="CITY">
+		<expression><![CDATA[$F{CITY}]]></expression>
+		<groupHeader>
+			<band height="26" splitType="Stretch">
+				<element kind="textField" uuid="a1000000-0000-4000-8000-000000000010" x="0" y="4" width="555" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
+					<expression><![CDATA[$F{CITY}]]></expression>
+				</element>
+				<element kind="line" uuid="a1000000-0000-4000-8000-000000000011" x="0" y="25" width="555" height="1"/>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22" splitType="Stretch">
+				<element kind="textField" uuid="a1000000-0000-4000-8000-000000000012" x="355" y="2" width="200" height="18" italic="true" hTextAlign="Right" vTextAlign="Middle">
+					<expression><![CDATA[$V{NB_CONTACTS} + " contact(s)"]]></expression>
+				</element>
+			</band>
+		</groupFooter>
+	</group>
+	<title height="80" splitType="Stretch">
+		<element kind="staticText" uuid="a1000000-0000-4000-8000-000000000020" x="0" y="10" width="555" height="36" fontSize="22.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Annuaire]]></text>
+		</element>
+		<element kind="textField" uuid="a1000000-0000-4000-8000-000000000021" x="0" y="48" width="555" height="20" italic="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{P_SOUS_TITRE}]]></expression>
+		</element>
+	</title>
+	<columnHeader height="20" splitType="Stretch">
+		<element kind="staticText" uuid="a1000000-0000-4000-8000-000000000030" x="0" y="0" width="185" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Nom]]></text>
+		</element>
+		<element kind="staticText" uuid="a1000000-0000-4000-8000-000000000031" x="185" y="0" width="185" height="20" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Prénom]]></text>
+		</element>
+		<element kind="staticText" uuid="a1000000-0000-4000-8000-000000000032" x="370" y="0" width="185" height="20" bold="true" vTextAlign="Middle">
+			<printWhenExpression><![CDATA[$P{P_AFFICHER_RUE}]]></printWhenExpression>
+			<text><![CDATA[Rue]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<element kind="textField" uuid="a1000000-0000-4000-8000-000000000040" x="0" y="0" width="185" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{LASTNAME}]]></expression>
+			</element>
+			<element kind="textField" uuid="a1000000-0000-4000-8000-000000000041" x="185" y="0" width="185" height="18" vTextAlign="Middle">
+				<expression><![CDATA[$F{FIRSTNAME}]]></expression>
+			</element>
+			<element kind="textField" uuid="a1000000-0000-4000-8000-000000000042" x="370" y="0" width="185" height="18" vTextAlign="Middle">
+				<printWhenExpression><![CDATA[$P{P_AFFICHER_RUE}]]></printWhenExpression>
+				<expression><![CDATA[$F{STREET}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="26" splitType="Stretch">
+		<element kind="textField" uuid="a1000000-0000-4000-8000-000000000050" x="0" y="4" width="200" height="18" fontSize="9.0" vTextAlign="Middle" pattern="dd/MM/yyyy">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+		<element kind="textField" uuid="a1000000-0000-4000-8000-000000000051" x="415" y="4" width="100" height="18" fontSize="9.0" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Page " + $V{PAGE_NUMBER} + " /"]]></expression>
+		</element>
+		<element kind="textField" uuid="a1000000-0000-4000-8000-000000000052" x="515" y="4" width="40" height="18" fontSize="9.0" vTextAlign="Middle" evaluationTime="Report">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="30" splitType="Stretch">
+		<element kind="textField" uuid="a1000000-0000-4000-8000-000000000060" x="0" y="8" width="555" height="20" bold="true" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Total : " + $V{REPORT_COUNT} + " contacts"]]></expression>
+		</element>
+	</summary>
+</jasperReport>
